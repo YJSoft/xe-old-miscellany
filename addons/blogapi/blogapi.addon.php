@@ -21,7 +21,7 @@ if($called_position == 'after_module_proc')
 	// Insert rsd tag into the header
 	Context::addHtmlHeader("    " . '<link rel="EditURI" type="application/rsd+xml" title="RSD" href="' . $rsd_url . '" />');
 }
-// If act isnot api, just return
+// If act is not api, just return
 if($_REQUEST['act'] != 'api')
 {
 	return;
@@ -30,9 +30,9 @@ if($_REQUEST['act'] != 'api')
 // Read func file
 require_once(_XE_PATH_ . 'addons/blogapi/blogapi.func.php');
 
-$xml = $GLOBALS['HTTP_RAW_POST_DATA'];
+$xml = file_get_contents("php://input");
 
-// If HTTP_RAW_POST_DATA is NULL, Print error message
+// If post body is NULL, Print error message
 if(!$xml)
 {
 	$content = getXmlRpcFailure(1, 'Invalid Method Call');
@@ -47,13 +47,12 @@ if(Security::detectingXEE($xml))
 	exit;
 }
 
-if(version_compare(PHP_VERSION, '5.2.11', '<=')) libxml_disable_entity_loader(true);
 $xml = new SimpleXMLElement($xml, LIBXML_NONET | LIBXML_NOENT);
 
 $method_name = (string)$xml->methodName;
 $params = $xml->params->param;
 
-// Compatible with some of methodname
+// Compatible with some of method name
 if(in_array($method_name, array('metaWeblog.deletePost', 'metaWeblog.getUsersBlogs', 'metaWeblog.getUserInfo')))
 {
 	$method_name = str_replace('metaWeblog.', 'blogger.', $method_name);
@@ -585,8 +584,8 @@ if($called_position == 'before_module_proc')
 <?xml version="1.0" ?>
 <rsd version="1.0" xmlns="http://archipelago.phrasewise.com/rsd" >
 <service>
-    <engineName>XpressEngine</engineName>
-    <engineLink>http://www.xpressengine.com/ </engineLink>
+    <engineName>Rhymix</engineName>
+    <engineLink>https://rhymix.org/ </engineLink>
     <homePageLink>{$homepagelink}</homePageLink>
     <apis>
         <api name="MetaWeblog" preferred="true" apiLink="{$api_url}" blogID="" />
