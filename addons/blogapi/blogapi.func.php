@@ -12,10 +12,7 @@ if(!defined('__XE__'))
 // Error messages
 function getXmlRpcFailure($error, $message)
 {
-	return
-			sprintf(
-					"<methodResponse>\n<fault><value><struct>\n<member>\n<name>faultCode</name>\n<value><int>%d</int></value>\n</member>\n<member>\n<name>faultString</name>\n<value><string>%s</string></value>\n</member>\n</struct></value></fault>\n</methodResponse>\n", $error, htmlspecialchars($message, ENT_COMPAT | ENT_HTML401, 'UTF-8', false)
-	);
+	return sprintf("<methodResponse>\n<fault><value><struct>\n<member>\n<name>faultCode</name>\n<value><int>%d</int></value>\n</member>\n<member>\n<name>faultString</name>\n<value><string>%s</string></value>\n</member>\n</struct></value></fault>\n</methodResponse>\n", $error, htmlspecialchars($message, ENT_COMPAT | ENT_HTML401, 'UTF-8', false));
 }
 
 // Display results
